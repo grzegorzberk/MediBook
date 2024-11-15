@@ -1,31 +1,55 @@
 // namespace ReservationService.Controllers;
 // using Microsoft.AspNetCore.Mvc;
 // using ReservationService.Data.Entities;
+// using ReservationService.Data.Repositories;
 
 // [Route("api/[controller]")]
 // [ApiController]
-// public class ReservationController : ControllerBase
+// public class ReservationsController : ControllerBase
 // {
-//     private readonly ReservationService _reservationRepository;
+//     private readonly IReservationRepository _reservationRepository;
 
-//     public ReservationController(IReservationService reservationsService)
+//     public ReservationsController(IReservationRepository reservationRepository)
 //     {
-//         _reservationService = reservationsService;
+//         _reservationRepository = reservationRepository;
+//     }
+
+//     [HttpGet]
+//     public async Task<ActionResult<IEnumerable<Reservation>>> GetReservations()
+//     {
+//         return Ok(await _reservationRepository.GetReservations());
 //     }
 
 //     [HttpGet("{id}")]
-//     public async Task<ActionResult<Reservation>> GetReservationsById(int id)
+//     public async Task<ActionResult<Reservation>> GetReservationById(Guid id)
 //     {
-//         var appointment = await _reservationsService.GetById(id);
-//         if (appointment == null)
+//         var reservation = await _reservationRepository.GetReservationById(id);
+//         if (reservation == null)
 //             return NotFound();
-//         return appointment;
+//         return reservation;
 //     }
 
 //     [HttpPost]
-//     public async Task<ActionResult> AddAppointment(Reservation appointment)
+//     public async Task<ActionResult> CreateReservation(Reservation reservation)
 //     {
-//         await _reservationService.Add(appointment);
-//         return CreatedAtAction(nameof(GetReservationsById), new { id = appointment.Id }, appointment);
+//         await _reservationRepository.AddReservation(reservation);
+//         return CreatedAtAction(nameof(GetReservationById), new { id = reservation.Id }, reservation);
+//     }
+
+//     [HttpPut("{id}")]
+//     public async Task<ActionResult> UpdateReservation(Guid id, Reservation reservation)
+//     {
+//         if (id != reservation.Id)
+//             return BadRequest();
+        
+//         await _reservationRepository.UpdateReservation(reservation);
+//         return NoContent();
+//     }
+
+//     [HttpDelete("{id}")]
+//     public async Task<ActionResult> DeleteReservation(Guid id)
+//     {
+//         await _reservationRepository.DeleteReservation(id);
+//         return NoContent();
 //     }
 // }

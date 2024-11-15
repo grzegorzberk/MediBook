@@ -1,11 +1,8 @@
 using System.ComponentModel.DataAnnotations;
+namespace ReservationService.Controllers.Request;
 
-namespace ReservationService.Data.Entities;
-
-public class User
+public class RegisterUserDto
 {
-    public int Id { get; set; }
-
     [Required]
     [MaxLength(50)]
     public string Name { get; set; } = null!;
@@ -14,6 +11,5 @@ public class User
     public string Email { get; set; } = null!;
     [Required]
     [MinLength(6)]
-    public string PasswordHash { get; set; } = null!;
-    public string Role { get; set; } = "User";
+    public string Password { get; set; } = null!;
 }

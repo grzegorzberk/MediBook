@@ -5,5 +5,5 @@ public interface IUserRepository
 {
     Task<User> GetUserById(Guid id);
     Task AddUser(User user);
-    // inne metody CRUD
+    Task<User> GetUserByEmail(string email);
 }

@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using ReservationService.Data.Entities;
 namespace ReservationService.Data.Repositories;
 
@@ -19,5 +20,10 @@ public class UserRepository : IUserRepository
     {
         await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<User> GetUserByEmail(string email)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
     }
 }
