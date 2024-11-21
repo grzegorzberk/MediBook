@@ -23,31 +23,50 @@ public class UsersController : ControllerBase
         _userRepository = userRepository;
         _configuration = configuration;
     }
-
+    [Authorize]
     [HttpGet("profile")]
     public async Task<IActionResult> GetUserProfile()
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var user = await _userRepository.GetUserById(Guid.Parse(userId));
-        if (user == null)
+        Console.WriteLine("Fetching User profile");
+        try
         {
-            return NotFound();
+            // Pobranie ID użytkownika z kontekstu
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized(new { message = "User is not authenticated" });
+            }
+
+            // Pobranie użytkownika z repozytorium
+            var user = await _userRepository.GetUserById(int.Parse(userId));
+            if (user == null)
+            {
+                return NotFound(new { message = "User not found" });
+            }
+
+            // Zwrócenie danych użytkownika
+            var userResponse = new LoginResponseDto
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Role = user.Role
+            };
+
+            return Ok(userResponse);
         }
-
-        var userResponse = new LoginResponseDto
+        catch (Exception ex)
         {
-            Id = user.Id,
-            Name = user.Name,
-            Role = user.Role
-        };
-
-        return Ok(userResponse);
+            // Logowanie błędu dla celów debugowania
+            Console.WriteLine($"Error in GetUserProfile: {ex.Message}");
+            return StatusCode(500, new { message = "Internal Server Error", error = ex.Message });
+        }
     }
 
     [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] UserLoginDto userLogin)
     {
+        Console.WriteLine("Logging in");
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
@@ -66,8 +85,6 @@ public class UsersController : ControllerBase
         {
             return Unauthorized(new { message = "Invalid email or password." });
         }
-
-        // Utworzenie listy roszczeń (claims)
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
@@ -80,7 +97,7 @@ public class UsersController : ControllerBase
 
         var authProperties = new AuthenticationProperties
         {
-            IsPersistent = true, // Zachowaj sesję po zamknięciu przeglądarki
+            IsPersistent = true,
             ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30)
         };
 
@@ -89,7 +106,6 @@ public class UsersController : ControllerBase
             new ClaimsPrincipal(claimsIdentity),
             authProperties);
 
-        // Zwróć podstawowe informacje o użytkowniku
         var loginResponseDto = new LoginResponseDto
         {
             Id = user.Id,
@@ -99,7 +115,7 @@ public class UsersController : ControllerBase
 
         return Ok(loginResponseDto);
     }
-
+    [AllowAnonymous]
     [HttpPost("logout")]
     public async Task<IActionResult> Logout()
     {
@@ -108,14 +124,14 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<User>> GetUserById(Guid id)
+    public async Task<ActionResult<User>> GetUserById(int id)
     {
         var user = await _userRepository.GetUserById(id);
         if (user == null)
             return NotFound();
         return user;
     }
-
+    [AllowAnonymous]
     [HttpPost("register/user")]
     public async Task<ActionResult> RegisterUser([FromBody] RegisterUserDto userDto)
     {

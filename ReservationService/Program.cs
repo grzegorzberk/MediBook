@@ -13,9 +13,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LoginPath = "/api/users/login";
         options.LogoutPath = "/api/users/logout";
         options.Cookie.HttpOnly = true;
-        options.Cookie.SameSite = SameSiteMode.Strict;
-        options.Cookie.SecurePolicy = CookieSecurePolicy.None; // Ustaw na Always w produkcji
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Czas trwania sesji
+        options.Cookie.SameSite = SameSiteMode.Lax;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
         options.SlidingExpiration = true;
     });
 
@@ -44,10 +44,9 @@ var app = builder.Build();
 
 app.MapControllers();
 
+app.UseCors("AllowReactApp");
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseCors("AllowReactApp");
 
 app.Run();
 

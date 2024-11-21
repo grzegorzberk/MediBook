@@ -16,9 +16,10 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5113/api/users/login", {
+      const response = await fetch("api/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify(formData),
       });
 
@@ -29,7 +30,6 @@ const Login = () => {
         return;
       }
 
-      // Przechodzenie do dashboardu w zależności od roli
       if (data.role === "User") {
         navigate("/dashboard/user");
       } else if (data.role === "ServiceProvider") {

@@ -1,4 +1,5 @@
 namespace ReservationService.Data.Entities;
+//rodzaj usługi
 public class AppointmentType
 {
     public int Id {get; set;}
