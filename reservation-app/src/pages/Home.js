@@ -1,21 +1,20 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import Header from '../components/Header';
+import HeroSection from '../components/HeroSection';
+import FeaturesSection from '../components/FeaturesSection';
+import HowItWorksSection from '../components/HowItWorksSection';
+import Footer from '../components/Footer';
 
 const Home = () => {
-    return (
-        <div>
-            <h1>Welcome to the Reservation App</h1>
-            <nav>
-                <ul>
-                    <li><Link to="/login">Login</Link></li>
-                    <li><Link to="/register/user">Register as User</Link></li>
-                    <li><Link to="/register/service-provider">Register as Service Provider</Link></li>
-                    <li><Link to="/dashboard/user">User Dashboard</Link></li>
-                    <li><Link to="/dashboard/service-provider">Service Provider Dashboard</Link></li>
-                </ul>
-            </nav>
-        </div>
-    );
+  return (
+    <>
+      <Header />
+      <HeroSection />
+      <FeaturesSection />
+      <HowItWorksSection />
+      <Footer />
+    </>
+  );
 };
 
 export default Home;

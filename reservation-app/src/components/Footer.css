@@ -1,0 +1,21 @@
+.footer {
+  font-family: 'Roboto', sans-serif;
+  background-color: #343a40;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.footer-links {
+  margin-bottom: 16px;
+}
+
+.footer-links a {
+  color: white;
+  margin: 0 8px;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}

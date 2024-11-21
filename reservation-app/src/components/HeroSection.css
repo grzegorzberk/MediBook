@@ -1,0 +1,51 @@
+.hero {
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(135deg, #007BFF, #0056b3);
+  color: white;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-weight: 700;
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-weight: 400;
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+.hero-buttons .btn {
+  display: inline-block;
+  padding: 12px 24px;
+  margin: 0 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.btn-primary {
+  background-color: white;
+  color: #007BFF;
+  border: 2px solid white;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: white;
+  color: #007BFF;
+}
